@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Şarkılarımız</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+    }
+    .carousel {
+      display: flex;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+    }
+    .carousel-item {
+      flex: 0 0 auto;
+      transition: all 0.3s ease-in-out;
+      background: rgba(255, 107, 0, 0.15); /* Hafif transparan cam efekti */
+      backdrop-filter: blur(10px); /* Glassmorphism */
+      border: 1px solid rgba(255, 107, 0, 0.3);
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    }
+    .carousel-item img {
+      object-fit: cover;
+      width: 100%;
+      height: 220px;
+      border-radius: 12px;
+      transition: transform 0.3s ease;
+    }
+    .carousel-item:hover {
+      transform: translateY(-5px); /* Hafif yükselme */
+      box-shadow: 0 8px 30px rgba(255, 107, 0, 0.4); /* Neon turuncu gölge */
+      background: rgba(255, 107, 0, 0.25);
+    }
+    .carousel-item:hover img {
+      transform: scale(1.05); /* Resimde hafif büyütme */
+    }
+    audio {
+      width: 100%;
+      outline: none;
+      filter: brightness(1.1);
+      border-radius: 8px;
+    }
+    .control-btn {
+      background: rgba(255, 107, 0, 0.8);
+      backdrop-filter: blur(5px);
+      border: 1px solid rgba(255, 107, 0, 0.5);
+      transition: all 0.3s ease;
+    }
+    .control-btn:hover {
+      background: rgba(255, 69, 0, 1);
+      box-shadow: 0 0 15px rgba(255, 107, 0, 0.6);
+      transform: scale(1.1);
+    }
+  </style>
+</head>
+<body class="bg-gray-900 text-white">
+  <div class="min-h-screen flex flex-col items-center justify-center p-6 bg-gradient-to-br from-gray-800 via-orange-900 to-orange-600">
+    <h1 class="text-5xl font-bold mb-10 text-white tracking-tight">Şarkılarımız</h1>
+    <div class="relative w-full max-w-5xl">
+      <div id="carousel" class="carousel">
+        <!-- Şarkı Kartları -->
+        <div class="carousel-item w-80 mx-3 rounded-lg p-5">
+          <img src="11.jpeg" alt="Şarkı 1">
+          <h3 class="text-xl font-semibold mt-3 text-white">Sen Evren Gibi Mükemmel ve Kusursuzsun</h3>
+          <p>&nbsp;</p>
+<p class="text-sm text-gray-300">Uzaylı Bey</p>
+          <p class="text-sm text-gray-300">&nbsp;</p>
+<audio controls>
+          <source src="111.mp3" type="audio/mpeg">
+            Tarayıcınız ses oynatmayı desteklemiyor.
+          </audio>
+        </div>
+        <div class="carousel-item w-80 mx-3 rounded-lg p-5">
+          <img src="22.jpeg" alt="Şarkı 2">
+          <h3 class="text-xl font-semibold mt-3 text-white">İkigaim&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</h3>
+          <p>&nbsp;</p>
+<p class="text-sm text-gray-300">Uzaylı Bey</p>
+          <p class="text-sm text-gray-300">&nbsp;</p>
+<audio controls>
+          <source src="222.mp3" type="audio/mpeg">
+            Tarayıcınız ses oynatmayı desteklemiyor.
+          </audio>
+        </div>
+        <div class="carousel-item w-80 mx-3 rounded-lg p-5">
+          <img src="33.jpeg" alt="Şarkı 3">
+          <h3 class="text-xl font-semibold mt-3 text-white">Sessizce Süzüldün Hayatıma&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </h3>
+          <p>&nbsp;</p>
+<p class="text-sm text-gray-300">Uzaylı Bey</p>
+          <p class="text-sm text-gray-300">&nbsp;</p>
+<audio controls>
+          <source src="333.mp3" type="audio/mpeg">
+            Tarayıcınız ses oynatmayı desteklemiyor.
+          </audio>
+        </div>
+        <div class="carousel-item w-80 mx-3 rounded-lg p-5">
+          <img src="44.jpeg" alt="Şarkı 4">
+          <h3 class="text-xl font-semibold mt-3 text-white">Kalbim Yine Seninle Doldu&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</h3>
+          <p>&nbsp;</p>
+<p class="text-sm text-gray-300">Uzaylı Bey</p>
+          <p class="text-sm text-gray-300">&nbsp;</p>
+<audio controls>
+          <source src="444.mp3" type="audio/mpeg">
+            Tarayıcınız ses oynatmayı desteklemiyor.
+          </audio>
+        </div>
+
+      <!-- Kontrol Butonları -->
+      <button id="prevBtn" class="control-btn absolute left--0 top-1/2 transform -translate-y-1/2 p-3 rounded-full text-white">
+        ←
+      </button>
+      <button id="nextBtn" class="control-btn absolute right-0 top-1/2 transform -translate-y-1/2 p-3 rounded-full text-white">
+        →
+      </button>
+    </div>
+  </div>
+
+  <script>
+    const carousel = document.getElementById('carousel');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    
+    let scrollAmount = 0;
+    const cardWidth = 500; 
+
+    nextBtn.addEventListener('click', () => {
+      scrollAmount += cardWidth;
+      if (scrollAmount > carousel.scrollWidth - carousel.clientWidth) {
+        scrollAmount = carousel.scrollWidth - carousel.clientWidth;
+      }
+      carousel.scrollTo({
+        left: scrollAmount,
+        behavior: 'smooth'
+      });
+    });
+
+    prevBtn.addEventListener('click', () => {
+      scrollAmount -= cardWidth;
+      if (scrollAmount < 0) {
+        scrollAmount = 0;
+      }
+      carousel.scrollTo({
+        left: scrollAmount,
+        behavior: 'smooth'
+      });
+    });
+  </script>
+</body>
+</html>
