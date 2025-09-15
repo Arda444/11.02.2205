@@ -249,8 +249,33 @@
                 <p>Hep çok güzel, hep çok tatlı.</p>
             </div>
         </div>
-    </div>
+   <!-- Resim 4 -->
+        <div class="gallery-item p-4 text-center">
+             <img src="16.jpg" alt="Anı 1" class="w-full h-300 object-cover rounded-md mb-4">
+            <div class="poem">
+                <p>Kalbim seninle attıkça,</p>
+                <p>Dünya daha güzel bir yer oluyor.</p>
+            </div>
+        </div>
+        <!-- Resim 5 -->
+        <div class="gallery-item p-4 text-center">
+             <img src="17.jpg" alt="Anı 1" class="w-full h-300 object-cover rounded-md mb-4">
+            <div class="poem">
+                <p>Sen yanımdayken her an,</p>
+                <p>Zaman bile kıskanıyor bizi.</p>
 
+            </div>
+        </div>
+        <!-- Resim 6 -->
+        <div class="gallery-item p-4 text-center">
+            <img src="18.jpg" alt="Anı 1" class="w-full h-300 object-cover rounded-md mb-4">
+            <div class="poem">
+                <p>Bir bakışın yeter bana,</p>
+                <p>Bin şiir olur ruhumda.</p>
+
+            </div>
+        </div>
+    </div>
     <canvas id="stars" class="stars"></canvas>
     <script>
         // Yıldız efekti
@@ -305,12 +330,15 @@
 
         menuToggle.addEventListener('click', () => {
             navLinks.classList.toggle('active');
+            // Hamburger simgesini değiştir (açık/kapalı)
+            menuToggle.textContent = navLinks.classList.contains('active') ? '✕' : '☰';
         });
 
         // Menü bağlantılarına tıklandığında menüyü kapat
         navLinksItems.forEach(link => {
             link.addEventListener('click', () => {
                 navLinks.classList.remove('active');
+                menuToggle.textContent = '☰'; // Bağlantıya tıklanınca simgeyi sıfırla
             });
         });
     </script>
