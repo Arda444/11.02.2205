@@ -1,0 +1,306 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Sevgilim İçin</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: linear-gradient(180deg, #d4eaff, #8ab4f8);
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            color: #fff;
+            overscroll-behavior: none;
+        }
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            width: 100%;
+            height: 100%;
+        }
+        .header-text {
+            position: relative;
+            z-index: 2;
+            font-size: 7vw;
+            text-align: center;
+            margin-bottom: 4vh;
+            font-family: 'Dancing Script', cursive;
+            color: #fff;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.7);
+            background: rgba(255, 105, 145, 0.4);
+            padding: 2vw 4vw;
+            border-radius: 10px;
+            max-width: 90%;
+            line-height: 1.2;
+        }
+        .main-text {
+            position: relative;
+            z-index: 2;
+            font-size: 4.5vw;
+            text-align: center;
+            max-width: 90%;
+            font-family: 'Dancing Script', cursive;
+            color: #fff;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.7);
+            background: rgba(255, 77, 136, 0.4);
+            padding: 3vw 5vw;
+            border-radius: 10px;
+            line-height: 1.3;
+        }
+        @media (max-width: 768px) {
+            .header-text {
+                font-size: 6vw;
+                padding: 2vw 3vw;
+                margin-bottom: 3vh;
+            }
+            .main-text {
+                font-size: 4vw;
+                padding: 2vw 3vw;
+            }
+        }
+        @media (max-width: 480px) {
+            .header-text {
+                font-size: 5.5vw;
+                padding: 1.5vw 2.5vw;
+            }
+            .main-text {
+                font-size: 3.8vw;
+                padding: 1.5vw 2.5vw;
+            }
+        }
+        @media (max-width: 360px) {
+            .header-text {
+                font-size: 5vw;
+                padding: 1.5vw 2vw;
+            }
+            .main-text {
+                font-size: 3.5vw;
+                padding: 1.5vw 2vw;
+            }
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.2/p5.min.js"></script>
+</head>
+<body>
+    <audio autoplay loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+        Tarayıcınız ses çalmayı desteklemiyor.
+    </audio>
+    <div class="header-text">
+        Evrenin en güzel çiçeğine, en sevdiği çiçek yakışır
+    </div>
+    <div class="main-text">
+        Seni Çok Seviyorum Evrenin En Kıymetli En Özel En Değerli En Tatlı En Güzel Prensesi
+    </div>
+    <script>
+        let waterLilies = [];
+        let leaves = [];
+
+        function setup() {
+            createCanvas(windowWidth, windowHeight);
+            // Define color palette for water lilies
+            const colors = [
+                color(255, 182, 193, 220), // Pink
+                color(255, 255, 255, 220), // White
+                color(186, 85, 211, 220),  // Purple
+                color(135, 206, 250, 220)  // Blue
+            ];
+            // Reduce number of lilies on smaller screens for performance
+            let lilyCount = windowWidth < 768 ? 10 : 15;
+            for (let i = 0; i < lilyCount; i++) {
+                waterLilies.push(new WaterLily(colors[floor(random(colors.length))]));
+            }
+            let leafCount = windowWidth < 768 ? 30 : 50;
+            for (let i = 0; i < leafCount; i++) {
+                leaves.push(new Leaf());
+            }
+        }
+
+        function draw() {
+            clear();
+            for (let lily of waterLilies) {
+                lily.update();
+                lily.display();
+            }
+            for (let leaf of leaves) {
+                leaf.update();
+                leaf.display();
+            }
+        }
+
+        class WaterLily {
+            constructor(petalColor) {
+                this.x = random(width);
+                this.y = random(height);
+                this.size = random(50, windowWidth < 768 ? 80 : 120); // Smaller lilies on mobile
+                this.speedX = random(-0.3, 0.3);
+                this.speedY = random(-0.3, 0.3);
+                this.petalColor = petalColor;
+                this.centerColor = color(255, 245, 100, 220); // Bright yellow center
+                this.padColor = color(0, random(120, 160), 0, 200); // Green lily pad
+                this.rotation = random(TWO_PI);
+                this.rotationSpeed = random(-0.01, 0.01);
+                this.waveOffset = random(TWO_PI); // For gentle bobbing
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY + sin(frameCount * 0.05 + this.waveOffset) * 0.2;
+                this.rotation += this.rotationSpeed;
+                if (this.x < 0 || this.x > width) this.speedX *= -1;
+                if (this.y < 0 || this.y > height) this.speedY *= -1;
+            }
+
+            display() {
+                push();
+                translate(this.x, this.y);
+                rotate(this.rotation);
+
+                // Lily pad
+                fill(this.padColor);
+                beginShape();
+                for (let i = 0; i < TWO_PI; i += PI / 16) {
+                    let r = this.size * 1.3 * (1 + 0.1 * sin(i * 8));
+                    vertex(r * cos(i), r * sin(i));
+                }
+                endShape(CLOSE);
+                // Notch in lily pad
+                fill(0, 0, 0, 50);
+                arc(0, 0, this.size * 1.3, this.size * 1.3, 0, PI / 3, PIE);
+
+                // Shadow for depth
+                fill(0, 0, 0, 40);
+                beginShape();
+                for (let i = 0; i < TWO_PI; i += PI / 16) {
+                    let r = this.size * (0.7 + 0.3 * cos(i * 6));
+                    vertex(r * cos(i) + 5, r * sin(i) + 5);
+                }
+                endShape(CLOSE);
+
+                // Outer petals
+                fill(this.petalColor);
+                beginShape();
+                for (let i = 0; i < TWO_PI; i += PI / 16) {
+                    let r = this.size * (0.7 + 0.3 * cos(i * 6)) * (1 + 0.1 * sin(i * 12));
+                    vertex(r * cos(i), r * sin(i));
+                }
+                endShape(CLOSE);
+
+                // Inner petals
+                fill(lerpColor(this.petalColor, color(255, 255, 255), 0.4));
+                beginShape();
+                for (let i = 0; i < TWO_PI; i += PI / 16) {
+                    let r = this.size * 0.5 * (0.7 + 0.3 * cos(i * 6)) * (1 + 0.1 * sin(i * 12));
+                    vertex(r * cos(i), r * sin(i));
+                }
+                endShape(CLOSE);
+
+                // Center of the flower
+                fill(this.centerColor);
+                beginShape();
+                for (let i = 0; i < TWO_PI; i += PI / 16) {
+                    let r = this.size * 0.2 * (1 + 0.1 * sin(i * 8));
+                    vertex(r * cos(i), r * sin(i));
+                }
+                endShape(CLOSE);
+
+                // Petal details (veins)
+                stroke(255, 255, 255, 50);
+                strokeWeight(1);
+                for (let i = 0; i < TWO_PI; i += PI / 8) {
+                    let r = this.size * 0.6;
+                    line(0, 0, r * cos(i), r * sin(i));
+                }
+                noStroke();
+
+                pop();
+            }
+        }
+
+        class Leaf {
+            constructor() {
+                this.x = random(width);
+                this.y = random(-height, 0);
+                this.size = random(8, windowWidth < 768 ? 15 : 20); // Smaller leaves on mobile
+                this.speedY = random(1, 3);
+                this.rotation = random(TWO_PI);
+                this.color = color(0, random(100, 200), 0, 200);
+            }
+
+            update() {
+                this.y += this.speedY;
+                this.x += sin(this.y * 0.01);
+                this.rotation += 0.05;
+                if (this.y > height) {
+                    this.y = random(-height, 0);
+                    this.x = random(width);
+                }
+            }
+
+            display() {
+                push();
+                translate(this.x, this.y);
+                rotate(this.rotation);
+                fill(this.color);
+                beginShape();
+                vertex(-this.size / 2, 0);
+                bezierVertex(-this.size / 2, -this.size / 2, this.size / 2, -this.size / 2, this.size / 2, 0);
+                bezierVertex(this.size / 2, this.size / 2, -this.size / 2, this.size / 2, -this.size / 2, 0);
+                endShape(CLOSE);
+                pop();
+            }
+        }
+
+        function windowResized() {
+            resizeCanvas(windowWidth, windowHeight);
+        }
+    </script>
+</body>
+</html>
